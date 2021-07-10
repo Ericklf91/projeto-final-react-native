@@ -1,23 +1,21 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import HomeScreen from '../../pages/home';
-import CartScreen from '../../pages/cart';
-import SubscriptionScreen from '../../pages/subscription';
-import LoginScreen from '../../pages/login';
-import CategoryScreen from '../../pages/category';
-import ProductScreen from '../../pages/product';
+import { HomeStack } from '../stack';
+import { LoginStack } from '../stack';
+import { CategoryStack } from '../stack';
+import { ProductStack } from '../stack';
+import { CartStack } from '../stack';
 
 const MainDrawer = createDrawerNavigator();
 
 export default () => {
     return (
         <MainDrawer.Navigator initialRouteName="Home" >
-            <MainDrawer.Screen name="Home" component={HomeScreen} />
-            <MainDrawer.Screen name="Cadastro" component={SubscriptionScreen} />
-            <MainDrawer.Screen name="Login" component={LoginScreen} />
-            <MainDrawer.Screen name="Categorias" component={CategoryScreen} />
-            <MainDrawer.Screen name="Produtos" component={ProductScreen} />
-            <MainDrawer.Screen name="Carrinho" component={CartScreen} />
+            <MainDrawer.Screen name="Home" component={HomeStack} />
+            <MainDrawer.Screen name="Login" component={LoginStack} />
+            <MainDrawer.Screen name="Categorias" component={CategoryStack} />
+            <MainDrawer.Screen name="Produtos" component={ProductStack} />
+            <MainDrawer.Screen name="Carrinho" component={CartStack} />
         </MainDrawer.Navigator>
     );
 }
