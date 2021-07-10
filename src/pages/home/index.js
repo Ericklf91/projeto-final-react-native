@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Card, Button, Text } from 'react-native-elements';
 import styles from './styles';
 
@@ -8,7 +8,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         loadDestaques();
-      }, []);
+    }, []);
 
     const loadDestaques = () => {
         setDestaques([{
@@ -20,7 +20,7 @@ const HomeScreen = () => {
     }
 
     return (
-        <FlatList style={styles.list}
+        <FlatList
             data={destaques}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
