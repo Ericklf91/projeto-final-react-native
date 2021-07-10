@@ -7,7 +7,7 @@ const HomeScreen = () => {
     const navigation = useNavigation();
 
     const handleSendButton = () => {
-        navigation.navigate('Cadastro');
+        navigation.navigate("Cadastro");
     }
 
     return (
