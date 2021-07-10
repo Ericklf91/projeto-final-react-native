@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, Button, Alert } from 'react-native';
-import { Input } from 'react-native-elements';
+import { View, FlatList, ActivityIndicator, Button, Alert } from 'react-native';
+import { Input, ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog, Portal } from 'react-native-paper';
 import api from '../../services/api';
@@ -8,12 +8,12 @@ import styles from './styles';
 
 const CategoryScreen = () => {
     const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [idCat, setIdCat] = useState('');
     const [nome, setNome] = useState('');
     const [desc, setDesc] = useState('');
+    const [loading, setLoading] = useState(false);
     const [visibleInsert, setVisibleInsert] = useState(false);
     const [visibleUpdate, setVisibleUpdate] = useState(false);
-    const [idCat, setIdCat] = useState('');
 
     const showDialogInsert = () => setVisibleInsert(true);
     const hideDialogInsert = () => setVisibleInsert(false);
@@ -27,7 +27,6 @@ const CategoryScreen = () => {
     const handleUpdateCategorie = (id) => {
         showDialogUpdate();
         setIdCat(id);
-        console.log(id, idCat);
     }
 
     const loadCategories = () => {
@@ -65,7 +64,6 @@ const CategoryScreen = () => {
             "Content-Type": "application/json"
         };
         const slug = (nome + 1);
-        console.log(id, nome, desc, slug);
         const content = { name: nome, description: desc, slug: slug }
         api.put(`/categories/${id}`, content, { headers })
             .then(() => {
@@ -84,6 +82,8 @@ const CategoryScreen = () => {
             .then(() => {
                 Alert.alert('Categoria deletada')
                 loadCategories();
+            }).catch(function (error) {
+                alert(error);
             });
     }
 
@@ -96,6 +96,18 @@ const CategoryScreen = () => {
             </View>
         );
     }
+
+    renderItem = ({ item }) => (
+        <ListItem bottomDivider>
+            <ListItem.Content>
+                <ListItem.Title>{item.name}</ListItem.Title>
+                <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+            </ListItem.Content>
+            <ListItem.Chevron />
+            <Button title="Atualizar" onPress={() => handleUpdateCategorie(item.id)} />
+            <Button title="Deletar" onPress={() => deleteCategorie(item.id)} />
+        </ListItem>
+    )
 
     return (
         <View>
@@ -163,16 +175,7 @@ const CategoryScreen = () => {
                 ListFooterComponent={renderFooter}
                 data={categories}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => {
-                    return (
-                        <View>
-                            <Text style={styles.listItem}>Nome: {item.name}</Text>
-                            <Text style={styles.listItem}>Descrição: {item.description}</Text>
-                            <Button title="Atualizar" onPress={() => handleUpdateCategorie(item.id)} />
-                            <Button title="Deletar" onPress={() => deleteCategorie(item.id)} />
-                        </View>
-                    )
-                }}
+                renderItem={renderItem}
             />
         </View>
     );
