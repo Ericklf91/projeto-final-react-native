@@ -11,16 +11,24 @@ const CategoryScreen = () => {
     const [loading, setLoading] = useState(false);
     const [nome, setNome] = useState('');
     const [desc, setDesc] = useState('');
+    const [visibleInsert, setVisibleInsert] = useState(false);
+    const [visibleUpdate, setVisibleUpdate] = useState(false);
+    const [idCat, setIdCat] = useState('');
 
-    const [visible, setVisible] = useState(false);
-
-    const showDialog = () => setVisible(true);
-
-    const hideDialog = () => setVisible(false);
+    const showDialogInsert = () => setVisibleInsert(true);
+    const hideDialogInsert = () => setVisibleInsert(false);
+    const showDialogUpdate = () => setVisibleUpdate(true);
+    const hideDialogUpdate = () => setVisibleUpdate(false);
 
     useEffect(() => {
         loadCategories();
     }, []);
+
+    const handleUpdateCategorie = (id) => {
+        showDialogUpdate();
+        setIdCat(id);
+        console.log(id, idCat);
+    }
 
     const loadCategories = () => {
         const headers = {
@@ -45,7 +53,24 @@ const CategoryScreen = () => {
             .then(() => {
                 Alert.alert('Categoria criada');
                 loadCategories();
-                hideDialog();
+                hideDialogInsert();
+            }).catch(function (error) {
+                alert(error);
+            });
+    }
+
+    const updateCategorie = (id) => {
+        const headers = {
+            "X-Authorization": "sk_30111510d2a5c7c20fcb74987aee0ee376f1d911a9118",
+            "Content-Type": "application/json"
+        };
+        const slug = (nome + 1);
+        console.log(id, nome, desc, slug);
+        const content = { name: nome, description: desc, slug: slug }
+        api.put(`/categories/${id}`, content, { headers })
+            .then(() => {
+                Alert.alert('Categoria atualizada');
+                loadCategories();
             }).catch(function (error) {
                 alert(error);
             });
@@ -74,9 +99,9 @@ const CategoryScreen = () => {
 
     return (
         <View>
-            <Button title="Inserir Categoria" onPress={showDialog} />
+            <Button title="Inserir Categoria" onPress={showDialogInsert} />
             <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog visible={visibleInsert} onDismiss={hideDialogInsert}>
                     <Dialog.Title>Inserir categoria</Dialog.Title>
                     <Dialog.Content>
                         <Input
@@ -98,9 +123,38 @@ const CategoryScreen = () => {
                             />}
                             label="Descrição" placeholder="Descrição" />
                     </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button title="Cancelar" onPress={hideDialog} />
+                    <Dialog.Actions style={styles.dialogButton}>
+                        <Button title="Cancelar" onPress={hideDialogInsert} />
                         <Button title="Enviar" onPress={insertCategories} />
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
+            <Portal>
+                <Dialog visible={visibleUpdate} onDismiss={hideDialogUpdate}>
+                    <Dialog.Title>Atualizar categoria</Dialog.Title>
+                    <Dialog.Content>
+                        <Input
+                            value={nome}
+                            onChangeText={(t) => setNome(t)}
+                            leftIcon={<Icon
+                                name='folder'
+                                size={24}
+                                color='black'
+                            />}
+                            label="Nome" placeholder="Nome" />
+                        <Input
+                            value={desc}
+                            onChangeText={(t) => setDesc(t)}
+                            leftIcon={<Icon
+                                name='file'
+                                size={24}
+                                color='black'
+                            />}
+                            label="Descrição" placeholder="Descrição" />
+                    </Dialog.Content>
+                    <Dialog.Actions style={styles.dialogButton}>
+                        <Button title="Cancelar" onPress={hideDialogUpdate} />
+                        <Button title="Enviar" onPress={() => updateCategorie(idCat)} />
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
@@ -114,6 +168,7 @@ const CategoryScreen = () => {
                         <View>
                             <Text style={styles.listItem}>Nome: {item.name}</Text>
                             <Text style={styles.listItem}>Descrição: {item.description}</Text>
+                            <Button title="Atualizar" onPress={() => handleUpdateCategorie(item.id)} />
                             <Button title="Deletar" onPress={() => deleteCategorie(item.id)} />
                         </View>
                     )

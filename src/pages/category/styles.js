@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     },
     view: {
       marginBottom: 20,
+    },
+    dialogButton: {
+      justifyContent: 'space-between',
     }
   });
 
