@@ -2,8 +2,8 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../pages/home';
 import CartScreen from '../../pages/cart';
-import SubscriptionScreen from '../../pages/subscription';
-import LoginScreen from '../../pages/login';
+import SignUpScreen from '../../pages/signUp';
+import SignInScreen from '../../pages/signIn';
 import CategoryScreen from '../../pages/category';
 import ProductScreen from '../../pages/product';
 import CheckoutScreen from '../../pages/checkout';
@@ -25,33 +25,33 @@ export const HomeStack = ({ navigation }) => {
     );
 }
 
-const SubscriptionStackNavigation = createStackNavigator();
-export const SubscriptionStack = ({ navigation }) => {
+const SignUpStackNavigation = createStackNavigator();
+export const SignUpStack = ({ navigation }) => {
     return (
-        <SubscriptionStackNavigation.Navigator screenOptions={{
+        <SignUpStackNavigation.Navigator screenOptions={{
             header: () => <Header
                 leftComponent={{ onPress: () => navigation.navigate("Home"), icon: 'home', color: '#fff' }}
                 centerComponent={{ text: 'CADASTRO', style: { color: '#fff' } }}
                 rightComponent={{ onPress: () => navigation.toggleDrawer(), icon: 'menu', color: '#fff', iconStyle: { color: '#fff' } }}
             />
         }}>
-            <SubscriptionStackNavigation.Screen name="Cadastro" component={SubscriptionScreen} />
-        </SubscriptionStackNavigation.Navigator>
+            <SignUpStackNavigation.Screen name="Cadastro" component={SignUpScreen} />
+        </SignUpStackNavigation.Navigator>
     );
 }
 
-const LoginStackNavigation = createStackNavigator();
-export const LoginStack = ({ navigation }) => {
+const SignInStackNavigation = createStackNavigator();
+export const SignInStack = ({ navigation }) => {
     return (
-        <LoginStackNavigation.Navigator screenOptions={{
+        <SignInStackNavigation.Navigator screenOptions={{
             header: () => <Header
                 leftComponent={{ onPress: () => navigation.navigate("Home"), icon: 'home', color: '#fff' }}
                 centerComponent={{ text: 'LOGIN', style: { color: '#fff' } }}
                 rightComponent={{ onPress: () => navigation.toggleDrawer(), icon: 'menu', color: '#fff', iconStyle: { color: '#fff' } }}
             />
         }}>
-            <LoginStackNavigation.Screen name="Login" component={LoginScreen} />
-        </LoginStackNavigation.Navigator>
+            <SignInStackNavigation.Screen name="Login" component={SignInScreen} />
+        </SignInStackNavigation.Navigator>
     );
 }
 
