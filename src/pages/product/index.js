@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, Alert } from 'react-native';
-import { Input, Card, Button } from 'react-native-elements';
+import { View, Text, FlatList, ActivityIndicator, Alert, ScrollView } from 'react-native';
+import { Input, Card, Button, Switch } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog, Portal } from 'react-native-paper';
 import api from '../../services/api';
@@ -16,7 +16,7 @@ const ProductScreen = () => {
     const [quantidade, setQuantidade] = useState('');
     const [destaque, setDestaque] = useState(false);
     const [imgUrl, setImgUrl] = useState('');
-    const [idCat, setIdCat] = useState('');
+    const [categorias, setCategorias] = useState('');
     const [visibleInsert, setVisibleInsert] = useState(false);
     const [visibleUpdate, setVisibleUpdate] = useState(false);
 
@@ -112,31 +112,70 @@ const ProductScreen = () => {
             <Button title="Inserir Produto" onPress={showDialogInsert} />
             <Portal>
                 <Dialog visible={visibleInsert} onDismiss={hideDialogInsert}>
-                    <Dialog.Title>Inserir Produto</Dialog.Title>
-                    <Dialog.Content>
-                        <Input
-                            value={nome}
-                            onChangeText={(t) => setNome(t)}
-                            leftIcon={<Icon
-                                name='folder'
-                                size={24}
-                                color='black'
-                            />}
-                            label="Nome" placeholder="Nome" />
-                        <Input
-                            value={desc}
-                            onChangeText={(t) => setDesc(t)}
-                            leftIcon={<Icon
-                                name='file'
-                                size={24}
-                                color='black'
-                            />}
-                            label="Descrição" placeholder="Descrição" />
-                    </Dialog.Content>
-                    <Dialog.Actions style={styles.dialogButton}>
-                        <Button title="Cancelar" onPress={hideDialogInsert} />
-                        <Button title="Enviar" onPress={insertProducts} />
-                    </Dialog.Actions>
+                    <ScrollView>
+                        <Dialog.Title>Inserir Produto</Dialog.Title>
+                        <Dialog.Content>
+                            <Input
+                                value={nome}
+                                onChangeText={(t) => setNome(t)}
+                                leftIcon={<Icon
+                                    name='cubes'
+                                    size={24}
+                                    color='black'
+                                />}
+                                label="Nome" placeholder="Nome" />
+                            <Input
+                                value={desc}
+                                onChangeText={(t) => setDesc(t)}
+                                leftIcon={<Icon
+                                    name='file'
+                                    size={24}
+                                    color='black'
+                                />}
+                                label="Descrição" placeholder="Descrição" />
+                            <Input
+                                value={valor}
+                                onChangeText={(t) => setValor(t)}
+                                leftIcon={<Icon
+                                    name='money'
+                                    size={24}
+                                    color='black'
+                                />}
+                                label="Preço" placeholder="Preço" />
+                            <Input
+                                value={quantidade}
+                                onChangeText={(t) => setQuantidade(t)}
+                                leftIcon={<Icon
+                                    name='sort-amount-asc'
+                                    size={24}
+                                    color='black'
+                                />}
+                                label="Quantidade" placeholder="Quantidade" />
+                            <Input
+                                value={imgUrl}
+                                onChangeText={(t) => setImgUrl(t)}
+                                leftIcon={<Icon
+                                    name='image'
+                                    size={24}
+                                    color='black'
+                                />}
+                                label="Imagem" placeholder="Url da Imagem" />
+                            <Input
+                                value={categorias}
+                                onChangeText={(t) => setCategorias(t)}
+                                leftIcon={<Icon
+                                    name='dropbox'
+                                    size={24}
+                                    color='black'
+                                />}
+                                label="Categoria" placeholder="Categoria do produto" />
+                            <Text>Exibir na home page?<Switch value={destaque} onChange={(t) => setDestaque(!destaque)} /></Text>
+                        </Dialog.Content>
+                        <Dialog.Actions style={styles.dialogButton}>
+                            <Button title="Cancelar" onPress={hideDialogInsert} />
+                            <Button title="Enviar" onPress={insertProducts} />
+                        </Dialog.Actions>
+                    </ScrollView>
                 </Dialog>
             </Portal>
             <FlatList style={styles.list}
