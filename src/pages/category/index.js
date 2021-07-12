@@ -30,25 +30,17 @@ const CategoryScreen = () => {
     }
 
     const loadCategories = () => {
-        const headers = {
-            "X-Authorization": "pk_test_30111d23b155b7b570eb490bfbff8f60ede41335fefbe"
-        };
-        api.get(`/categories`, { headers })
+        api.get(`/categorias`)
             .then((response) => {
-                setCategories(response.data.data);
+                setCategories(response.data);
             }).catch(function (error) {
                 alert(error);
             });
     }
 
     const insertCategories = () => {
-        const headers = {
-            "X-Authorization": "sk_30111510d2a5c7c20fcb74987aee0ee376f1d911a9118",
-            "Content-Type": "application/json"
-        };
-        const slug = (nome + 1);
-        const content = { name: nome, description: desc, slug: slug }
-        api.post(`/categories`, content, { headers })
+        const content = { nome: nome, descricao: desc }
+        api.post(`/categorias`, content)
             .then(() => {
                 Alert.alert('Categoria criada');
                 loadCategories();
@@ -59,13 +51,8 @@ const CategoryScreen = () => {
     }
 
     const updateCategorie = (id) => {
-        const headers = {
-            "X-Authorization": "sk_30111510d2a5c7c20fcb74987aee0ee376f1d911a9118",
-            "Content-Type": "application/json"
-        };
-        const slug = (nome + 1);
-        const content = { name: nome, description: desc, slug: slug }
-        api.put(`/categories/${id}`, content, { headers })
+        const content = { nome: nome, descricao: desc }
+        api.put(`/categorias/${id}`, content)
             .then(() => {
                 Alert.alert('Categoria atualizada');
                 loadCategories();
@@ -75,15 +62,12 @@ const CategoryScreen = () => {
     }
 
     const deleteCategorie = (id) => {
-        const headers = {
-            "X-Authorization": "sk_30111f852eeb033c9341a70ca0ba06287f5da000050c6"
-        };
-        api.delete(`/categories/${id}`, { headers })
+        api.delete(`/categorias/${id}`)
             .then(() => {
                 Alert.alert('Categoria deletada')
                 loadCategories();
             }).catch(function (error) {
-                alert(error);
+                alert('Retire os produtos da categoria antes de deletá-la', error);
             });
     }
 
@@ -100,12 +84,12 @@ const CategoryScreen = () => {
     renderItem = ({ item }) => (
         <ListItem bottomDivider>
             <ListItem.Content>
-                <ListItem.Title>{item.name}</ListItem.Title>
-                <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+                <ListItem.Title>{item.nome}</ListItem.Title>
+                <ListItem.Subtitle>{item.descricao}</ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Chevron />
-            <Button title="Atualizar" onPress={() => handleUpdateCategorie(item.id)} />
-            <Button title="Deletar" onPress={() => deleteCategorie(item.id)} />
+            <Button title="Atualizar" onPress={() => handleUpdateCategorie(parseInt(item.id))} />
+            <Button title="Deletar" onPress={() => deleteCategorie(parseInt(item.id))} />
         </ListItem>
     )
 

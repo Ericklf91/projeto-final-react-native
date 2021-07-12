@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "https://api.chec.io/v1",
+  baseURL: "http://10.0.2.2:8080/",
 });
 
 export default api;
