@@ -23,6 +23,11 @@ const SignInScreen = () => {
             alert('Falha ao realizar login! Email ou senha inválidos');
         });
     }
+    
+    const handleMostrar = () => {
+        loadCustomers();
+        setMostrar(false)
+    }
 
     const loadCustomers = () => {
         const headers = {
@@ -30,7 +35,15 @@ const SignInScreen = () => {
         };
         api.get(`/customers`, { headers })
             .then((response) => {
-                setCustomers(response.data.data);
+
+                for (var i = 0; i < response.data.data.length; i++) {
+                    if (response.data.data[i].email == email) {
+                      console.log(response.data.data[i])
+                      setCustomers(response.data.data[i]);
+                      console.log(customers);
+                    }
+                  }
+                //setCustomers(response.data.data);
             }).catch(function (error) {
                 alert(error);
             });
