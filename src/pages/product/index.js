@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { Input, Card, Button, Switch, Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog, Portal } from 'react-native-paper';
+import CarrinhoContext from '../../context/CarrinhoContext';
 import api from '../../services/api';
 import styles from './styles';
 
@@ -25,6 +26,7 @@ const ProductScreen = () => {
     const hideDialogInsert = () => setVisibleInsert(false);
     const showDialogUpdate = () => setVisibleUpdate(true);
     const hideDialogUpdate = () => setVisibleUpdate(false);
+    const { addProduto } = useContext(CarrinhoContext);
 
     useEffect(() => {
         loadProducts();
@@ -122,7 +124,8 @@ const ProductScreen = () => {
                 </Text>
                 <Button
                     buttonStyle={styles.button}
-                    title='Adicionar no Carrinho' />
+                    title='Adicionar no Carrinho'
+                    onPress={() => addProduto({ item })} />
             </Card>
             <Button title="Atualizar" onPress={() => handleUpdateProduct(parseInt(item.id))} />
             <Button title="Deletar" onPress={() => deleteProduct(parseInt(item.id))} />
