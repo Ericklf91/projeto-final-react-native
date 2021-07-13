@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import CarrinhoContext from './CarrinhoContext';
 
 const CarrinhoProvider = ({ children }) => {
-
   const [produtos, setProdutos] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   addProduto = (produto) => {
     setProdutos([...produtos, produto]);
@@ -18,7 +19,7 @@ const CarrinhoProvider = ({ children }) => {
       value={{
         produtos: produtos,
         addProduto: addProduto,
-        delProduto: delProduto
+        delProduto: delProduto,
       }}
     >
       {children}

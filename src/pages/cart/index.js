@@ -1,13 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { View, SafeAreaView, FlatList, Text } from 'react-native';
+import { Button, View, SafeAreaView, FlatList, Text } from 'react-native';
 import CarrinhoContext from '../../context/CarrinhoContext';
 import styles from './styles';
 
 const CartScreen = () => {
+    const navigation = useNavigation();
     const context = useContext(CarrinhoContext);
-    console.log(context.produtos);
-
     const valorTotal = context.produtos.reduce((total, prod) => total + prod.item.valor, 0).toFixed(2);
+
+    const handleCheckoutButton = () => {
+        navigation.navigate("Login");
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -27,6 +31,7 @@ const CartScreen = () => {
             />
             <View>
                 <Text style={styles.title}>Total: {valorTotal}</Text>
+                <Button title="Finalizar Pedido" onPress={handleCheckoutButton} />
             </View>
         </SafeAreaView>
     );

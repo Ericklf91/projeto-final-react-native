@@ -6,7 +6,7 @@ import styles from './styles';
 const CheckoutScreen = () => {
     return (
         <View>
-            <Text>Checkout Screen</Text>
+            <Text>Obrigado pela compra</Text>
         </View>
     );
 }

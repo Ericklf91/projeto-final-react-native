@@ -1,11 +1,12 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { HomeStack } from '../stack';
-import { SignUpStack } from '../stack';
-import { SignInStack } from '../stack';
-import { CategoryStack } from '../stack';
-import { ProductStack } from '../stack';
-import { CartStack } from '../stack';
+import { CheckoutStack, 
+    HomeStack, 
+    SignUpStack, 
+    SignInStack, 
+    CategoryStack,
+    ProductStack,
+    CartStack } from '../stack';
 
 const MainDrawer = createDrawerNavigator();
 
@@ -21,6 +22,10 @@ export default () => {
                 title: "",
                 headerShown: false, 
             }} name="Cadastro" component={SignUpStack} />
+            <MainDrawer.Screen options={{
+                title: "",
+                headerShown: false, 
+            }} name="Checkout" component={CheckoutStack} />
         </MainDrawer.Navigator>
     );
 }
