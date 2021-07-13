@@ -17,12 +17,8 @@ const SignUpScreen = () => {
     }
 
     const insertCustomer = () => {
-        const headers = {
-            "X-Authorization": "sk_30111510d2a5c7c20fcb74987aee0ee376f1d911a9118",
-            "Content-Type": "application/json"
-        };
-        const content = { email: email, firstname: nome, external_id: senha, lastname: "User" }
-        api.post(`/customers`, content, { headers })
+        const content = { email: email, nome: nome, senha: senha, role: "User" }
+        api.post(`/cliente`, content)
             .then(() => {
                 Alert.alert('Cliente criado');
                 handleSignInButton();
