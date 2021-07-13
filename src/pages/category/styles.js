@@ -15,6 +15,27 @@ const styles = StyleSheet.create({
   },
   dialogButton: {
     justifyContent: 'space-between',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    marginBottom: 10,
+  },
+  button: {
+    borderRadius: 1,
+    marginLeft: 0,
+    marginRight: 0,
+    marginBottom: 0
+  },
+  img: {
+    width: 170, 
+    height: 170 
+  },
+  title: {
+    textAlign: 'center'
   }
 });
 

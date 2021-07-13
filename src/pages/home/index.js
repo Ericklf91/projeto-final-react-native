@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { View, FlatList, SafeAreaView } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { RefreshControl, View, FlatList, SafeAreaView } from 'react-native';
 import { Card, Button, Text, Image } from 'react-native-elements';
 import api from '../../services/api';
 import styles from './styles';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const HomeScreen = () => {
     const [destaques, setDestaques] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        loadDestaques();
+        wait(1000).then(() => setRefreshing(false));
+    }, []);
 
     useEffect(() => {
         loadDestaques();
     }, []);
-
-    const handleMostrar = () => {
-        loadDestaques();
-    }
 
     const loadDestaques = () => {
         api.get(`/produtos/destacados`)
@@ -22,12 +29,17 @@ const HomeScreen = () => {
             }).catch(function (error) {
                 alert(error);
             });
-    }
+    };
 
     return (
         <View style={styles.container}>
             <Text style={styles.title} h4>Itens em Destaque</Text>
             <FlatList
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />}
                 data={destaques}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
@@ -46,7 +58,7 @@ const HomeScreen = () => {
                                 <Button
                                     buttonStyle={styles.button}
                                     title='Ver produto' />
-                                <Card.Divider /> 
+                                <Card.Divider />
                             </Card>
                         </SafeAreaView>
                     );
