@@ -57,7 +57,8 @@ const HomeScreen = () => {
                                 </Text>
                                 <Button
                                     buttonStyle={styles.button}
-                                    title='Ver produto' />
+                                    title='Adicionar ao Carrinho'
+                                    onPress={() => addProduto({ item })} />
                                 <Card.Divider />
                             </Card>
                         </SafeAreaView>

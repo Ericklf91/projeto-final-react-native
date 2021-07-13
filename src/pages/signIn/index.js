@@ -3,10 +3,12 @@ import { TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Text, Button } from 'react-native-elements';
+import api from '../../services/api';
 import styles from './styles';
 
 const SignInScreen = () => {
     const navigation = useNavigation();
+    const [cliente, setCliente] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
@@ -14,9 +16,24 @@ const SignInScreen = () => {
         navigation.navigate("Cadastro");
     }
 
-    const handleSignInButton = () => {
-        alert("Você está logado");
-        navigation.navigate("Checkout")
+    const validaCliente = (email, senha) => {
+        console.log(email, senha);
+        api.get(`/cliente/validar/${email}/${senha}`)
+            .then((response) => {
+                console.log(response.data.email);
+                console.log(response.data.senha);
+                if (response.data.email === email && response.data.senha === senha) {
+                    console.log('Entrei aqui');
+                    setCliente(response.data);
+                    alert(`Você está logado!`);
+                }
+            }).catch(function () {
+                alert("Login ou senha inválidos!");
+            });
+    }
+
+    const handleSignInButton = (email, senha) => {
+        validaCliente(email, senha);
     }
 
     return (
@@ -38,7 +55,7 @@ const SignInScreen = () => {
                     color='black'
                 />}
                 label="Senha" placeholder="Password" secureTextEntry={true} />
-            <Button title="Logar" onPress={handleSignInButton} />
+            <Button title="Logar" onPress={() => handleSignInButton(email, senha)} />
             <TouchableOpacity onPress={handleSignUpButton}>
                 <Text style={styles.text}>Crie sua conta grátis</Text>
             </TouchableOpacity>
