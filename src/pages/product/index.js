@@ -10,7 +10,6 @@ import styles from './styles';
 const ProductScreen = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [limit, setLimit] = useState('10');
     const [id, setId] = useState('');
     const [nome, setNome] = useState('');
     const [desc, setDesc] = useState('');
@@ -21,12 +20,12 @@ const ProductScreen = () => {
     const [idCat, setIdCat] = useState('');
     const [visibleInsert, setVisibleInsert] = useState(false);
     const [visibleUpdate, setVisibleUpdate] = useState(false);
+    const { addProduto } = useContext(CarrinhoContext);
 
     const showDialogInsert = () => setVisibleInsert(true);
     const hideDialogInsert = () => setVisibleInsert(false);
     const showDialogUpdate = () => setVisibleUpdate(true);
     const hideDialogUpdate = () => setVisibleUpdate(false);
-    const { addProduto } = useContext(CarrinhoContext);
 
     useEffect(() => {
         loadProducts();
@@ -272,7 +271,6 @@ const ProductScreen = () => {
                 </Dialog>
             </Portal>
             <FlatList style={styles.list}
-                onEndReachedThreshold={0.1}
                 ListFooterComponent={renderFooter}
                 data={products}
                 keyExtractor={(item, index) => index}

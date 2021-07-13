@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, Button, Alert } from 'react-native';
-import { Input, ListItem } from 'react-native-elements';
+import React, { useState, useEffect, useContext } from 'react';
+import { ScrollView, Text, View, FlatList, ActivityIndicator, Button, Alert, Image } from 'react-native';
+import { Card, Input, ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog, Portal } from 'react-native-paper';
+import CarrinhoContext from '../../context/CarrinhoContext';
 import api from '../../services/api';
 import styles from './styles';
 
 const CategoryScreen = () => {
+    const [products, setProducts] = useState('');
     const [categories, setCategories] = useState([]);
     const [idCat, setIdCat] = useState('');
     const [nome, setNome] = useState('');
     const [desc, setDesc] = useState('');
     const [loading, setLoading] = useState(false);
+    const [visibleList, setVisibleList] = useState(false);
     const [visibleInsert, setVisibleInsert] = useState(false);
     const [visibleUpdate, setVisibleUpdate] = useState(false);
+    const { addProduto } = useContext(CarrinhoContext);
 
+    const showDialogList = () => setVisibleList(true);
+    const hideDialogList = () => setVisibleList(false);
     const showDialogInsert = () => setVisibleInsert(true);
     const hideDialogInsert = () => setVisibleInsert(false);
     const showDialogUpdate = () => setVisibleUpdate(true);
@@ -27,6 +33,16 @@ const CategoryScreen = () => {
     const handleUpdateCategorie = (id) => {
         showDialogUpdate();
         setIdCat(id);
+    }
+
+    const listProducts = (id) => {
+        api.get(`/categorias/produtos/${id}`)
+            .then((response) => {
+                setProducts(response.data);
+                showDialogList();
+            }).catch(function (error) {
+                alert(error);
+            });
     }
 
     const loadCategories = () => {
@@ -87,11 +103,41 @@ const CategoryScreen = () => {
                 <ListItem.Title>{item.nome}</ListItem.Title>
                 <ListItem.Subtitle>{item.descricao}</ListItem.Subtitle>
             </ListItem.Content>
-            <ListItem.Chevron />
+            <ListItem.Chevron size={30} onPress={() => listProducts(item.id)} />
             <Button title="Atualizar" onPress={() => handleUpdateCategorie(parseInt(item.id))} />
             <Button title="Deletar" onPress={() => deleteCategorie(parseInt(item.id))} />
         </ListItem>
     )
+
+    renderProduto = ({ item }) => (
+        <Portal>
+            <Dialog visible={visibleList} onDismiss={hideDialogList}>
+                <Dialog.Title style={styles.title}>Produtos da categoria</Dialog.Title>
+                <Dialog.Content>
+                    <ScrollView>
+                        <Card  style={styles.container}>
+                            <Card.Title>{item.nome}</Card.Title>
+                            <Card.Divider />
+                            <Image style={styles.img} source={{ uri: `${item.fotoProduto}` }} />
+                            <Text style={styles.text}>
+                                Descrição: {item.descricao}
+                            </Text>
+                            <Text style={styles.text}>
+                                Preço: {item.valor}
+                            </Text>
+                            <Text style={styles.text}>
+                                Quantidade em Estoque: {item.quantidade}
+                            </Text>
+                            <Button
+                                buttonStyle={styles.button}
+                                title='Adicionar no Carrinho'
+                                onPress={() => addProduto({ item })} />
+                        </Card>
+                    </ScrollView>
+                </Dialog.Content>
+            </Dialog>
+        </Portal>
+    );
 
     return (
         <View>
@@ -155,11 +201,15 @@ const CategoryScreen = () => {
                 </Dialog>
             </Portal>
             <FlatList style={styles.list}
-                onEndReachedThreshold={0.1}
                 ListFooterComponent={renderFooter}
                 data={categories}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}
+            />
+            <FlatList style={styles.list}
+                data={products}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderProduto}
             />
         </View>
     );
