@@ -1,14 +1,20 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import styles from './styles';
+import { Text } from 'react-native';
+import { Card } from 'react-native-elements';
+import styles from "../checkout/styles";
 
 
 const CheckoutScreen = () => {
     return (
-        <View>
-            <Text>Obrigado pela compra</Text>
-        </View>
+        <Card>
+            <Card.Title>Obrigado pela compra</Card.Title>
+            <Card.Divider />
+            <Card.Image style={styles.img} source={require('../../assets/cart.png')}>
+            </Card.Image>
+            <Text style={styles.text}> Volte sempre </Text> 
+        </Card>
     );
 }
 
 export default CheckoutScreen;
+
