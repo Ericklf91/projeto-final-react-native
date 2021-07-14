@@ -17,11 +17,9 @@ const SignInScreen = () => {
     }
 
     const validaCliente = (email, senha) => {
-        console.log(email, senha);
         api.get(`/cliente/validar/${email}/${senha}`)
             .then((response) => {
                 if (response.data.email === email && response.data.senha === senha) {
-                    console.log('Entrei aqui');
                     setCliente(response.data);
                     alert(`Você está logado!`);
                 }

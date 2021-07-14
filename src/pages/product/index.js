@@ -86,7 +86,6 @@ const ProductScreen = () => {
     }
 
     const deleteProduct = (id) => {
-        console.log(id);
         api.delete(`/produtos/${id}`)
             .then(() => {
                 Alert.alert('Produto deletado')
