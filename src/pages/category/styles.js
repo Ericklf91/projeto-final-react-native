@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  body: {
+    flex: 1
+  },
   list: {
     paddingHorizontal: 20,
   },
@@ -31,8 +34,8 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   img: {
-    width: 170, 
-    height: 170 
+    width: 300, 
+    height: 150,
   },
   title: {
     textAlign: 'center'

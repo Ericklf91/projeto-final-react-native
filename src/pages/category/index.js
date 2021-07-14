@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, Text, View, FlatList, ActivityIndicator, Button, Alert, Image } from 'react-native';
-import { Card, Input, ListItem } from 'react-native-elements';
+import { TouchableOpacity, ScrollView, View, FlatList, ActivityIndicator, Button, Alert, Image, TouchableOpacityBase } from 'react-native';
+import { Card, Input, ListItem, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dialog, Portal } from 'react-native-paper';
 import CarrinhoContext from '../../context/CarrinhoContext';
@@ -98,49 +98,50 @@ const CategoryScreen = () => {
     }
 
     renderItem = ({ item }) => (
-        <ListItem bottomDivider>
-            <ListItem.Content>
-                <ListItem.Title>{item.nome}</ListItem.Title>
-                <ListItem.Subtitle>{item.descricao}</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron size={30} onPress={() => listProducts(item.id)} />
-            <Button title="Atualizar" onPress={() => handleUpdateCategorie(parseInt(item.id))} />
-            <Button title="Deletar" onPress={() => deleteCategorie(parseInt(item.id))} />
-        </ListItem>
+        <>
+            {!visibleList &&
+                <ListItem bottomDivider>
+                    <ListItem.Content>
+                        <ListItem.Title>{item.nome}</ListItem.Title>
+                        <ListItem.Subtitle>{item.descricao}</ListItem.Subtitle>
+                    </ListItem.Content>
+                    <ListItem.Chevron size={30} onPress={() => listProducts(item.id)} />
+                    <Button title="Atualizar" onPress={() => handleUpdateCategorie(parseInt(item.id))} />
+                    <Button title="Deletar" onPress={() => deleteCategorie(parseInt(item.id))} />
+                </ListItem>
+            }
+        </>
     )
 
     renderProduto = ({ item }) => (
-        <Portal>
-            <Dialog visible={visibleList} onDismiss={hideDialogList}>
-                <Dialog.Title style={styles.title}>Produtos da categoria</Dialog.Title>
-                <Dialog.Content>
-                    <ScrollView>
-                        <Card  style={styles.container}>
-                            <Card.Title>{item.nome}</Card.Title>
-                            <Card.Divider />
-                            <Image style={styles.img} source={{ uri: `${item.fotoProduto}` }} />
-                            <Text style={styles.text}>
-                                Descrição: {item.descricao}
-                            </Text>
-                            <Text style={styles.text}>
-                                Preço: {item.valor}
-                            </Text>
-                            <Text style={styles.text}>
-                                Quantidade em Estoque: {item.quantidade}
-                            </Text>
-                            <Button
-                                buttonStyle={styles.button}
-                                title='Adicionar no Carrinho'
-                                onPress={() => addProduto({ item })} />
-                        </Card>
-                    </ScrollView>
-                </Dialog.Content>
-            </Dialog>
-        </Portal>
+        <>
+            {visibleList &&
+                <ScrollView>
+                    <Card style={styles.container}>
+                        <Card.Title>{item.nome}</Card.Title>
+                        <Card.Divider />
+                        <Image style={styles.img} source={{ uri: `${item.fotoProduto}` }} />
+                        <Text style={styles.text}>
+                            Descrição: {item.descricao}
+                        </Text>
+                        <Text style={styles.text}>
+                            Preço: {item.valor}
+                        </Text>
+                        <Text style={styles.text}>
+                            Quantidade em Estoque: {item.quantidade}
+                        </Text>
+                        <Button
+                            buttonStyle={styles.button}
+                            title='Adicionar no Carrinho'
+                            onPress={() => addProduto({ item })} />
+                    </Card>
+                </ScrollView>
+            }
+        </>
     );
 
     return (
-        <View>
+        <View style={styles.body}>
             <Button title="Inserir Categoria" onPress={showDialogInsert} />
             <Portal>
                 <Dialog visible={visibleInsert} onDismiss={hideDialogInsert}>
@@ -206,6 +207,12 @@ const CategoryScreen = () => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}
             />
+            {visibleList &&
+                <>
+                    <TouchableOpacity onPress={() => setVisibleList(false)}><Text>Voltar</Text></TouchableOpacity>
+                    <Text style={styles.title} h4>Produtos da Categoria</Text>
+                </>
+            }
             <FlatList style={styles.list}
                 data={products}
                 keyExtractor={(item, index) => index.toString()}
