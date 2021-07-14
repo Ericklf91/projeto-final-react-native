@@ -8,6 +8,7 @@ const CarrinhoProvider = ({ children }) => {
 
   addProduto = (produto) => {
     setProdutos([...produtos, produto]);
+    alert('Produto adicionado!');
   };
 
   delProduto = (produtoId) => {

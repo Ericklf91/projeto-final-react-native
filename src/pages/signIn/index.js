@@ -20,8 +20,6 @@ const SignInScreen = () => {
         console.log(email, senha);
         api.get(`/cliente/validar/${email}/${senha}`)
             .then((response) => {
-                console.log(response.data.email);
-                console.log(response.data.senha);
                 if (response.data.email === email && response.data.senha === senha) {
                     console.log('Entrei aqui');
                     setCliente(response.data);
